@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Snip — URL Shortener</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <p class="eyebrow">URL SHORTENER</p>
+      <h1 class="headline">Make it short.</h1>
+      <p class="subhead">Paste a link, get something worth sharing.</p>
+
+      <form id="shorten-form" class="shorten-form" novalidate>
+        <label for="long-url" class="visually-hidden">Long URL</label>
+        <input
+          type="text"
+          id="long-url"
+          name="longUrl"
+          placeholder="https://example.com/a/very/long/path"
+          autocomplete="off"
+          required
+        />
+        <button type="submit" class="btn-primary">Shorten</button>
+      </form>
+
+      <p id="shorten-error" class="error-text" role="alert" hidden></p>
+
+      <div id="result" class="result" aria-live="polite" hidden>
+        <div class="result-pill">
+          <a id="short-link" class="short-link" href="#" target="_blank" rel="noopener"></a>
+          <button id="copy-btn" class="btn-copy" type="button">Copy</button>
+        </div>
+        <p class="original-url" id="original-url"></p>
+      </div>
+
+      <div class="divider"></div>
+
+      <section class="stats-section">
+        <p class="stats-label">Check link stats</p>
+        <form id="stats-form" class="stats-form" novalidate>
+          <label for="stats-code" class="visually-hidden">Short code or link</label>
+          <input
+            type="text"
+            id="stats-code"
+            name="statsCode"
+            placeholder="short code or full link"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="btn-secondary">Check</button>
+        </form>
+        <p id="stats-error" class="error-text" role="alert" hidden></p>
+        <div id="stats-result" class="stats-result" aria-live="polite" hidden>
+          <span id="stats-count" class="stats-count"></span>
+          <span class="stats-caption">total clicks</span>
+        </div>
+      </section>
+    </div>
+
+    <p class="footer-note">Built by Bhunesh — Node, Express, MongoDB, Redis.</p>
+  </main>
+
+  <script src="/script.js"></script>
+</body>
+</html>
