@@ -19,9 +19,12 @@ connectDB().then(() => {
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.json({ limit: '10kb' }));
-// This tells Express to read the real client IP out of the X-Forwarded-For header Render's proxy sets, rather than trusting the connection's immediate source
-app.set('trust proxy', 1); // req.ip can report a reverse proxy's address instead of the real client's, unless Express is told to trust the proxy.
+app.use(express.json({ limit: '10kb' })); // set max limit for security
+
+// req.ip can report a reverse proxy's address instead of the real client's, unless Express is told to trust the proxy.
+app.set('trust proxy', true)
+// This tells Express to parse the entire chain of proxies to find the original client IP
+// to to read the real client IP out of the X-Forwarded-For header Render's proxy sets, rather than trusting the connection's immediate source
 
 app.use('/editDB', editDBRouter); 
 app.use('/', urlShortenerRouter); 
