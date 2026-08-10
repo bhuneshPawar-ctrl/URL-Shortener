@@ -22,7 +22,6 @@ router.post('/shorten', rateLimiter('shorten', 60, 3), async (req, res) => {
             return sendError(res, 400, 'Provide a valid URL.')
         }
         const url = await Url.findOne({longUrl : longUrl});
-        console.log('2:', longUrl)
         const selected_method = METHOD_IDX < URL_SHORTENER_METHODS.length ? URL_SHORTENER_METHODS[METHOD_IDX] : 'nonoid';
         let shortCode = '';
         if(url){
@@ -43,7 +42,6 @@ router.post('/shorten', rateLimiter('shorten', 60, 3), async (req, res) => {
 
 router.get('/:shortCode', async (req, res) => {
     try{
-        console.log('in...redirector')
         const shortCode = req.params.shortCode; 
         if(!shortCode){
             return sendError(res, 400, 'provide the short code');
@@ -52,12 +50,11 @@ router.get('/:shortCode', async (req, res) => {
         const cachedLongUrl = await redis.get(cacheKeyLongUrl);
         let longUrl = '';
         if (cachedLongUrl) {
-            console.log('Cache HIT 🚀');
+            // Cache HIT 🚀
             longUrl = cachedLongUrl; 
         }else{
-            console.log('Cache MISS 🐢')
+            // Cache MISS 🐢
             const urlDoc = await Url.findOne({ shortCode : shortCode}); 
-            console.log('3:', shortCode)
             if(!urlDoc){
                 return sendError(res, 404, `Link not found for ${shortCode}`);
             }
@@ -75,7 +72,6 @@ router.get('/:shortCode', async (req, res) => {
             $push : {clickHistory : {userAgent : userAgent}}
         }, {
             upsert : true, 
-            // returnDocument : 'after'
         }).catch((err) => {
             console.error('ERROR-backgroundClickUpdation', err.message)
         }); 

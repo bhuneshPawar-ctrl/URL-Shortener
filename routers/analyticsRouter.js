@@ -14,11 +14,8 @@ router.get('/totalClicks/:shortCode', async (req, res) => {
         const cacheKey = `${shortCode}-clicks`;
         const cachedDoc = await redis.get(cacheKey); 
         if(cachedDoc){
-            console.log('Cache hit..clicks')
-            console.log(typeof cachedDoc, cachedDoc)
             return sendSuccess(res, 200, 'totalClicks fetched successfully', { totalClicks : cachedDoc.totalClicks}); 
         }
-        console.log('Cache Miss..,clicks')
         const analyticsDoc = await Analytics.findOne({shortCode : shortCode});
         if(!analyticsDoc){
             return sendError(res, 400, 'Url does not exist'); 

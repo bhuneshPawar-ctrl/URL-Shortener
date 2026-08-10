@@ -6,7 +6,6 @@ const urlShortenerRouter = require('./routers/shortenUrlRouter')
 const editDBRouter = require('./routers/editDB');
 const analyticsRouter = require('./routers/analyticsRouter'); 
 const {sendSuccess, sendError} = require('./utils/response');
-// const connectRedis = require('./config/redis');
 
 const PORT = process.env.PORT || 3000; 
 
@@ -21,6 +20,9 @@ const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '10kb' }));
+// This tells Express to read the real client IP out of the X-Forwarded-For header Render's proxy sets, rather than trusting the connection's immediate source
+app.set('trust proxy', 1); // req.ip can report a reverse proxy's address instead of the real client's, unless Express is told to trust the proxy.
+
 app.use('/editDB', editDBRouter); 
 app.use('/', urlShortenerRouter); 
 app.use('/', analyticsRouter);
