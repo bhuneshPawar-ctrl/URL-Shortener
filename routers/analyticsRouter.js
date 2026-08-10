@@ -14,13 +14,21 @@ router.get('/totalClicks/:shortCode', async (req, res) => {
         const cacheKey = `${shortCode}-clicks`;
         const cachedDoc = await redis.get(cacheKey); 
         if(cachedDoc){
+            // console.log('cache-hit..clickCounter');
             return sendSuccess(res, 200, 'totalClicks fetched successfully', { totalClicks : cachedDoc.totalClicks}); 
         }
+        // console.log('cache-miss..clickCounter')
         const analyticsDoc = await Analytics.findOne({shortCode : shortCode});
         if(!analyticsDoc){
-            return sendError(res, 400, 'Url does not exist'); 
+            const urlExists = await Url.exists({shortCode : shortCode});
+            if(!urlExists){
+                return sendError(res, 400, 'Url does not exist'); 
+            }
+            await Analytics.create({
+                shortCode: shortCode
+            })
         }
-        const totalClicks = analyticsDoc.totalClicks; 
+        const totalClicks = analyticsDoc ? analyticsDoc.totalClicks: 0; 
         await redis.set(cacheKey, {totalClicks : totalClicks}, {ex : 60}); 
         sendSuccess(res, 200, 'totalClicks fetched successfully', { totalClicks : totalClicks}); 
     }catch(err){

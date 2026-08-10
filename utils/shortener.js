@@ -32,7 +32,6 @@ const getShortCode = async (method) => {
             { returnDocument : 'after', upsert : true}
         );
         let num = counterDoc.counter + 10000; 
-        console.log('---- counter :', num);
         let rem = 0;
         while(num > 0){
             rem = num % 62 
