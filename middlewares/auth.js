@@ -7,14 +7,14 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const userAuth = async (req, res, next) => {
     try{
-        const {token} = res.cookie;
+        const {token} = req.cookies;
         if(!token){
-            sendError(res, 401, 'Invalid User, please login again');
+            return sendError(res, 401, 'Invalid User, please login again');
         }
         const decodedPayload = jwt.verify(token, JWT_SECRET); 
         const url = await Url.findById(decodedPayload._id).select('-password');
         if(!url){
-            sendError(res, 404, 'User not found')
+            return sendError(res, 404, 'User not found')
         }
         res.url = url; 
         next()

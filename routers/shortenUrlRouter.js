@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router(); 
-// const userAuth = require('../middlewares/auth'); 
 const {sendSuccess, sendError} = require('../utils/response');
 const Url = require('../models/url');
 const getShortCode = require('../utils/shortener');
