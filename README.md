@@ -4,7 +4,6 @@ A production-flavored URL shortener with pluggable short-code generation, Redis 
 
 > This repository contains the **backend**, along with a minimal static frontend served directly from the same Express app. No separate frontend framework or hosting — one server, one origin.
 
-**Live demo:** `<add your Render URL here>`
 
 ---
 
